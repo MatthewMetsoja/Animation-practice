@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>side Panel scroll</title>    <style>
+        *,
+        *::after,
+        *::before{
+            padding:0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        body{
+             overflow-x: hidden;     /* Step 1 */
+        }
+
+        .box{
+             height:100vh;
+             width: 100vw;
+             position: absolute;
+             display: inline-block;
+
+             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            flex-direction: column;
+        }
+
+        .a{
+            background-color: red;
+           
+        }
+
+        h4{
+            padding: 3rem;
+        }
+
+        .scroll-down{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .scroll-down :nth-child(2){
+            font-size: 1.8rem;
+        }
+
+        .b{
+            background-color: blue;
+            left:100vw;
+
+        }
+
+        .c{
+            background-color: green;
+            left:200vw;
+        }
+
+        .d{
+            background-color: yellow;
+            left:300vw;
+        }
+
+        .e{
+            background-color: purple;
+            left:400vw;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="box a">
+            <p>
+                <h1>Horizontal snapping sections (simple)</h1>
+                <h4>Scroll vertically to scrub the horizontal animation. It also dynamically snaps to the sections in an organic way based on velocity.  
+                    The snapping occurs based on the natural ending position after momentum is applied, not a simplistic "wherever it is when the user stops".
+                </h4>
+            </p>   
+            <div class="scroll-down">
+               <div>Scroll down</div>
+               <div>&darr;</div> 
+            </div>
+        </div>
+        <div class="box b">b</div>
+        <div class="box c">c</div>
+        <div class="box d">d</div>
+        <div class="box e">e</div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.0/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.0/ScrollToPlugin.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.0/ScrollTrigger.min.js"></script>
+    <script>
+        
+        // to get this to work we must first set overflow-x to "hidden"; on the body 
+
+        gsap.registerPlugin(ScrollTrigger);
+
+        //  we do this as an array so this will still work no matter how many more sections we add in the future! 
+        let sections = gsap.utils.toArray(".box");
+
+        gsap.to(sections, {
+            xPercent: -100 * (sections.length -1),
+            ease: "none",
+            scrollTrigger: {
+                trigger: ".box",
+                pin: true,
+                // pinSpacing: false,
+                scrub: 1,
+                
+                snap: 1 / (sections.length - 1),
+                
+                // base vertical scrolling based on how wide the container is so it feels more natural.
+                // end:()=> "+=" + document.querySelector(".box").offsetWidth
+            }
+        });
+
+    </script>
+</body>
+</html>
